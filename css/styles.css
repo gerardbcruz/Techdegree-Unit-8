@@ -74,7 +74,7 @@ input {
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: all .6s .2s ease-out;
+  transition: all .6s .1s ease-out;
   position: relative;
 }
 
@@ -90,15 +90,15 @@ input {
   transition: left .8s .3s ease-in-out;
 }
 
+/* Hover Styles */
 .employee-card:hover .arrow-btn {
   opacity: 1;
   left: 87%;
 }
 
 .employee-card:hover {
-  background: #171717;
-  transform: scale(1.2);
-  border: none;
+  background-color: #171717;
+  border-color: #171717;
   z-index: 100;
 }
 
@@ -114,6 +114,7 @@ input {
 .employee-card:hover .employee-name {
   color: #FFFFFF;
 }
+/* End Hover Styles */
 
 .employee-text {
   padding-left: 15px;
@@ -240,6 +241,10 @@ input {
 
   input {
     max-width: 370px;
+  }
+
+  .employee-card:hover {
+    transform: scale(1.2);
   }
 
   .employee-container {

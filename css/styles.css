@@ -111,7 +111,7 @@ input {
   color: #898989;
 }
 
-.employee-card:hover p:first-child {
+.employee-card:hover .employee-name {
   color: #FFFFFF;
 }
 
@@ -125,13 +125,13 @@ input {
   margin: 5px 0;
 }
 
-.employee-text p:first-child {
+.employee-text .employee-name {
   font-weight: 700;
   font-size: 1rem;
   color: #4D4D4D;
 }
 
-.employee-text a {
+.employee-text .employee-email {
   text-decoration: none;
   color: #8F9598;
 }

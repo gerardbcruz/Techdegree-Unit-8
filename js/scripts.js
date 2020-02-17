@@ -1,7 +1,8 @@
 /////////// VARIABLES ///////////
+const searchBox = document.getElementById("search");
 const employeesList = document.querySelector(".employees");
 const usersURL = "https://randomuser.me/api/?results=12&nat=us";
-const employees = document.querySelectorAll(".employee-container");
+
 
 /////////// FUNCTIONS ///////////
 // Fetch Function
@@ -22,7 +23,7 @@ function checkStatus(response) {
 }
 
 function generateHTML(data) {
-  console.log(data.results)
+  console.log(data.results);
   data.results.map( employee => {
     const employeeDiv = document.createElement('div');
     employeeDiv.classList.add("employee-container");
@@ -31,9 +32,9 @@ function generateHTML(data) {
     <div class="employee-card">
       <img class="profile-image" src="${employee.picture.medium}" alt="employee">
       <div class="employee-text">
-        <p>${employee.name.first} ${employee.name.last}</p>
-        <a href="#">${employee.email}</a>
-        <p>${employee.location.city}</p>
+        <p class="employee-name">${employee.name.first} ${employee.name.last}</p>
+        <a class="employee-email" href="#">${employee.email}</a>
+        <p class="employee-city">${employee.location.city}</p>
       </div>
       <span class="arrow-btn"></span>
     </div>
@@ -55,17 +56,21 @@ function generateHTML(data) {
     </div>
     `;
   });
+  //Create variable to capture employee names
+  const employeeNames = document.querySelectorAll(".employee-name");
+  return employeeNames;
 }
 
 
 function openModal(e) {
   e.preventDefault();
   const clicked = e.target;
+  //targets all clicked items inside of the employee-card and opens modal
   if (clicked.className === "employee-card") {
     clicked.nextElementSibling.style.display = "block";
   } else if (clicked.className === "profile-image" || clicked.className === "employee-text" || clicked.className === "arrow-btn") {
     clicked.parentNode.nextElementSibling.style.display = "block";
-  } else if (clicked.tagName === "P" || clicked.tagName === "A") {
+  } else if (clicked.className === "employee-name" || clicked.className === "employee-email" || clicked.className === "employee-city") {
     clicked.parentNode.parentNode.nextElementSibling.style.display = "block";
   }
 }
@@ -83,9 +88,29 @@ function modalOutsideClick(e) {
   }
 }
 
+//Search Functionality
+function searchEmployees(employeeCollection) {
+  searchBox.addEventListener("keyup", function() {
+    const searchValue = searchBox.value.toLowerCase();
+    //Loop through employee names
+    for (let i=0; i < employeeCollection.length; i++) {
+      pTag = employeeCollection[i];
+      const lowerCaseName = pTag.textContent.toLowerCase();
+
+      // Check for input match on Employee names 
+      if (lowerCaseName.indexOf(searchValue) > -1) {
+        pTag.parentNode.parentNode.style.display = "block";
+      } else {
+        pTag.parentNode.parentNode.style.display = "none";
+      }
+    }
+  })
+}
+
 /////////// INITIALIZE PAGE ///////////
 fetchData(usersURL)
-  .then(generateHTML);
+  .then(generateHTML)
+  .then(searchEmployees);
 
 
 /////////// EVENT LISTENERS ///////////

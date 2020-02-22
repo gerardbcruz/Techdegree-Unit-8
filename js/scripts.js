@@ -27,7 +27,8 @@ function checkStatus(response) {
 function generateHTML(data) {
   console.log(data.results);
 
-  data.results.map(employee => {
+  // Loop through and generate employee containers
+  data.results.map((employee, index) => {
     const employeeDiv = document.createElement("div");
     employeeDiv.classList.add("employee-container");
     employeesList.appendChild(employeeDiv);
@@ -37,17 +38,10 @@ function generateHTML(data) {
     const employeeFullName = `${employee.name.first} ${employee.name.last}`;
     const employeeEmail = employee.email;
     const employeeCity = employee.location.city;
-    const employeePhone = employee.phone;
-    const employeeStreet = `${employee.location.street.number} ${employee.location.street.name}`;
-    const employeeState = employee.location.state;
-    const employeePostal = employee.location.postcode;
-
-    const employeeDOBEdit = employee.dob.date.substr(0, 10).split("-");
-    const employeeDOB = `${employeeDOBEdit[1]}/${employeeDOBEdit[2]}/${employeeDOBEdit[0]}`;
 
     //Generate employee containers
     employeeDiv.innerHTML = `
-    <div class="employee-card">
+    <div class="employee-card" id="${index}">
       <img class="profile-image" src="${employeePicture}" alt="employee">
       <div class="employee-text">
         <p class="employee-name">${employeeFullName}</p>
@@ -59,9 +53,11 @@ function generateHTML(data) {
     `;
   });
 
+  // Loop through and generate employee modal content
   data.results.map(employee => {
     const modalContent = document.createElement("div");
     modalContent.classList.add("modal-content");
+    modalContent.classList.add("fade");
     modalInner.appendChild(modalContent);
 
     //Employee Variables
@@ -100,46 +96,105 @@ function generateHTML(data) {
     `;
   });
 
-  //Create variable to capture employee names
+  //Create variable to capture and return employee names (for search functionality)
   const employeeNames = document.querySelectorAll(".employee-name");
   return employeeNames;
 }
 
-// Open Modal
-function openModal(e) {
-  e.preventDefault();
-  const clicked = e.target;
-  //targets all clicked items inside of the employee-card and opens modal
-  if (
-    clicked.className === "employee-card" ||
-    clicked.className === "profile-image" ||
-    clicked.className === "employee-text" ||
-    clicked.className === "arrow-btn" ||
-    clicked.className === "employee-name" ||
-    clicked.className === "employee-email" ||
-    clicked.className === "employee-city"
-  ) {
-    modal.style.display = "block";
-  }
-}
-
-//Close Modal
-function closeModal(e) {
-  const closeButton = e.target;
-  if (closeButton.className === "modal-close-btn") {
-    modal.style.display = "none";
-  }
-}
-
-//Close Modal with Outside Click
-function modalOutsideClick(e) {
-  if (e.target.className === "modal") {
-    modal.style.display = "none";
-  }
-}
-
 //Enable Modal Event Listeners
 function enableModal() {
+  /////////// VARIABLES ///////////
+  const prevButton = document.querySelector(".prevButton");
+  const nextButton = document.querySelector(".nextButton");
+  let modalCounter = 1;
+
+  /////////// FUNCTIONS ///////////
+  // Open Modal
+  function openModal(e) {
+    e.preventDefault();
+    const clicked = e.target;
+    const employeeCard = document.getElementsByClassName("employee-card");
+
+    // Initializes an employee index to be passed to currentEmployee() function
+    let employeeIndex = 0;
+
+    //targets all clicked items inside of the employee-card and opens modal
+    if (
+      clicked.className === "employee-card" ||
+      clicked.className === "profile-image" ||
+      clicked.className === "employee-text" ||
+      clicked.className === "arrow-btn" ||
+      clicked.className === "employee-name" ||
+      clicked.className === "employee-email" ||
+      clicked.className === "employee-city"
+    ) {
+      // Gets the Id number of employee card
+      const targetId = e.target.closest(".employee-card").id;
+
+      // Displays full-screen modal
+      modal.style.display = "block";
+
+      // Loopos through employee Card and checks if there is a match with ID
+      for (let i = 0; i < employeeCard.length; i++) {
+        let employeeCardIndex = employeeCard[i].id;
+        if (targetId === employeeCardIndex) {
+          employeeIndex = i;
+        }
+      }
+
+      // Displays correct employee in modal
+      currentEmployee(employeeIndex + 1);
+    }
+  }
+
+  //Close Modal
+  function closeModal(e) {
+    const closeButton = e.target;
+    if (closeButton.className === "modal-close-btn") {
+      modal.style.display = "none";
+    }
+  }
+
+  //Close Modal with Outside Click
+  function modalOutsideClick(e) {
+    if (e.target.className === "modal") {
+      modal.style.display = "none";
+    }
+  }
+
+  function prevEmployee() {
+    modalCounter--;
+    showEmployee(modalCounter);
+  }
+
+  function nextEmployee() {
+    modalCounter++;
+    showEmployee(modalCounter);
+  }
+
+  function currentEmployee(index) {
+    showEmployee((modalCounter = index));
+  }
+
+  function showEmployee(index) {
+    const modalSlides = document.getElementsByClassName("modal-content");
+
+    if (index > modalSlides.length) {
+      modalCounter = 1;
+    }
+    if (index < 1) {
+      modalCounter = modalSlides.length;
+    }
+
+    // Hide Modal Content initially
+    for (let i = 0; i < modalSlides.length; i++) {
+      modalSlides[i].style.display = "none";
+    }
+    // Display selected Employee on Modal
+    modalSlides[modalCounter - 1].style.display = "block";
+  }
+
+  /////////// Event Listeners ///////////
   //Open modal
   employeesList.addEventListener("click", openModal);
 
@@ -149,18 +204,18 @@ function enableModal() {
   // Modal close from outside click
   window.addEventListener("click", modalOutsideClick);
 
-  // Modal Slider Functionality
-  const modalSlides = document.getElementsByClassName("modal-content");
-  console.log(modalSlides);
+  // Prev/Next Buttons
+  prevButton.addEventListener("click", prevEmployee);
+  nextButton.addEventListener("click", nextEmployee);
 }
 
-//Search Functionality
-function searchEmployees(employeeCollection) {
+//Enable Search Functionality
+function enableSearchEmployees(employeeCollection) {
   searchBox.addEventListener("keyup", function() {
     const searchValue = searchBox.value.toLowerCase();
     //Loop through employee names
     for (let i = 0; i < employeeCollection.length; i++) {
-      pTag = employeeCollection[i];
+      const pTag = employeeCollection[i];
       const lowerCaseName = pTag.textContent.toLowerCase();
 
       // Check for input match on Employee names
@@ -176,5 +231,5 @@ function searchEmployees(employeeCollection) {
 /////////// INITIALIZE PAGE ///////////
 fetchData(usersURL)
   .then(generateHTML)
-  .then(searchEmployees)
+  .then(enableSearchEmployees)
   .finally(enableModal);

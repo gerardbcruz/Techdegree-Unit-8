@@ -149,6 +149,7 @@ input {
   width: 100vw;
   overflow: auto;
   background: rgba(0, 0, 0, 0.5);
+  transition: 0.7s ease-in;
 }
 
 .modal-inner {
@@ -179,6 +180,12 @@ input {
   top: 20%;
   font-size: 2.5rem;
   color: rgba(77, 77, 77, 0.4);
+  transition: color 0.4s ease-in-out;
+}
+
+.prevButton:hover,
+.nextButton:hover {
+  color: rgba(77, 77, 77, 1);
 }
 
 .prevButton {
@@ -228,6 +235,34 @@ input {
 .modal-content a {
   text-decoration: none;
   color: #8f9598;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  animation-name: fade;
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /****** Media Queries ******/

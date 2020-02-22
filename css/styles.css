@@ -10,9 +10,9 @@
   width: 95%;
   max-width: 1200px;
   font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
-  background: #FCFCFC;
-  color: #4D4D4D;
+  font-family: "Montserrat", sans-serif;
+  background: #fcfcfc;
+  color: #4d4d4d;
 }
 
 /* Header */
@@ -40,54 +40,54 @@ header p {
 }
 
 input {
-  border: 1.5px solid #DFDFDF;
+  border: 1.5px solid #dfdfdf;
   border-radius: 5px;
   height: 45px;
-  font-size: .875em;
+  font-size: 0.875em;
   outline: none;
   width: 100%;
-  color: #8F9598;
+  color: #8f9598;
   padding-left: 15px;
-  background: #fff url('../images/search.png') no-repeat;
+  background: #fff url("../images/search.png") no-repeat;
   background-position: 95% 50%;
 }
 
 ::placeholder {
-  color: #8F9598;
+  color: #8f9598;
 }
 
 /* Employees */
 
 .profile-image {
-    display: block;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
+  display: block;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 }
 
 .employee-card {
-  background: #FFFFFF;
-  border: 1.5px solid #DFDFDF;
+  background: #ffffff;
+  border: 1.5px solid #dfdfdf;
   border-radius: 5px;
   padding: 2em 1em;
   margin-bottom: 30px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: all .6s .1s ease-out;
+  transition: all 0.6s 0.1s ease-out;
   position: relative;
 }
 
 .arrow-btn {
   opacity: 0;
-  background: url('../images/arrows.svg');
+  background: url("../images/arrows.svg");
   width: 24px;
   height: 14.9px;
   display: inline-block;
   position: absolute;
   bottom: 15%;
   left: 81%;
-  transition: left .8s .3s ease-in-out;
+  transition: left 0.8s 0.3s ease-in-out;
 }
 
 /* Hover Styles */
@@ -112,14 +112,14 @@ input {
 }
 
 .employee-card:hover .employee-name {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 /* End Hover Styles */
 
 .employee-text {
   padding-left: 15px;
-  color: #8F9598;
-  font-size: .75em;
+  color: #8f9598;
+  font-size: 0.75em;
 }
 
 .employee-text p {
@@ -129,12 +129,12 @@ input {
 .employee-text .employee-name {
   font-weight: 700;
   font-size: 1rem;
-  color: #4D4D4D;
+  color: #4d4d4d;
 }
 
 .employee-text .employee-email {
   text-decoration: none;
-  color: #8F9598;
+  color: #8f9598;
 }
 
 /* Modal Styling */
@@ -142,18 +142,17 @@ input {
 .modal {
   display: none;
   position: fixed;
-	z-index: 200;
-	top: 0;
-	left: 0;
-	height: 100vh;
-	width: 100vw;
-	overflow: auto;
+  z-index: 200;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
   background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
-  background: #FFFFFF;
-  border: 1.5px solid #DFDFDF;
+  background: #ffffff;
   border-radius: 5px;
   padding: 3em 2em 2.5em;
   margin: 10% auto;
@@ -161,7 +160,7 @@ input {
   width: 85%;
   max-width: 450px;
   position: relative;
-  box-shadow: 0px 5px 8px -2px rgba(0,0,0,0.7);
+  box-shadow: 0px 5px 8px -2px rgba(0, 0, 0, 0.7);
 }
 
 .modal-close-btn {
@@ -179,12 +178,12 @@ input {
 
 .modal-info-1,
 .modal-info-2 {
-  color: #8F9598;
-  font-size: .875em;
+  color: #8f9598;
+  font-size: 0.875em;
 }
 
 .modal-info-1 {
-  border-bottom: 1.2px solid #DFDFDF;
+  border-bottom: 1.2px solid #dfdfdf;
   padding-bottom: 20px;
 }
 
@@ -202,12 +201,31 @@ input {
 .modal-employee-name {
   font-weight: 700;
   font-size: 1rem;
-  color: #4D4D4D;
+  color: #4d4d4d;
 }
 
 .modal-content a {
   text-decoration: none;
-  color: #8F9598;
+  color: #8f9598;
+}
+
+/* Modal Slider Styling */
+
+.prevButton,
+.nextButton {
+  cursor: pointer;
+  position: absolute;
+  top: 20%;
+  font-size: 2.5rem;
+  color: rgba(77, 77, 77, 0.4);
+}
+
+.prevButton {
+  left: 10%;
+}
+
+.nextButton {
+  right: 10%;
 }
 
 /****** Media Queries ******/
@@ -244,7 +262,7 @@ input {
   }
 
   .employee-card:hover {
-    transform: scale(1.2);
+    transform: scale(1.145);
   }
 
   .employee-container {

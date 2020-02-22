@@ -3,14 +3,13 @@ const searchBox = document.getElementById("search");
 const employeesList = document.querySelector(".employees");
 const usersURL = "https://randomuser.me/api/?results=12&nat=us";
 
-
 /////////// FUNCTIONS ///////////
 // Fetch Function
 function fetchData(url) {
   return fetch(url)
-           .then(checkStatus)
-           .then(res => res.json())
-           .catch(error => console.log('Looks like there was a problem!', error))
+    .then(checkStatus)
+    .then(res => res.json())
+    .catch(error => console.log("Looks like there was a problem!", error));
 }
 
 // Checks if the response from the server is successful
@@ -25,13 +24,13 @@ function checkStatus(response) {
 // Generates Employees on to the page
 function generateHTML(data) {
   console.log(data.results);
-  data.results.map( employee => {
-    const employeeDiv = document.createElement('div');
+  data.results.map(employee => {
+    const employeeDiv = document.createElement("div");
     employeeDiv.classList.add("employee-container");
     employeesList.appendChild(employeeDiv);
 
     //Employee Variables
-    const employeePicture = employee.picture.medium;
+    const employeePicture = employee.picture.large;
     const employeeFullName = `${employee.name.first} ${employee.name.last}`;
     const employeeEmail = employee.email;
     const employeeCity = employee.location.city;
@@ -40,7 +39,7 @@ function generateHTML(data) {
     const employeeState = employee.location.state;
     const employeePostal = employee.location.postcode;
 
-    const employeeDOBEdit = employee.dob.date.substr(0,10).split("-");
+    const employeeDOBEdit = employee.dob.date.substr(0, 10).split("-");
     const employeeDOB = `${employeeDOBEdit[1]}/${employeeDOBEdit[2]}/${employeeDOBEdit[0]}`;
 
     //Generate employee containers
@@ -68,6 +67,8 @@ function generateHTML(data) {
           <p>${employeeStreet}, ${employeeCity}, ${employeeState} ${employeePostal}</p>
           <p>Birthday: ${employeeDOB}</p>
         </div>
+        <p class="prevButton">&#10094;</p>
+        <p class="nextButton">&#10095;</p>
       </div>
     </div>
     `;
@@ -84,9 +85,17 @@ function openModal(e) {
   //targets all clicked items inside of the employee-card and opens modal
   if (clicked.className === "employee-card") {
     clicked.nextElementSibling.style.display = "block";
-  } else if (clicked.className === "profile-image" || clicked.className === "employee-text" || clicked.className === "arrow-btn") {
+  } else if (
+    clicked.className === "profile-image" ||
+    clicked.className === "employee-text" ||
+    clicked.className === "arrow-btn"
+  ) {
     clicked.parentNode.nextElementSibling.style.display = "block";
-  } else if (clicked.className === "employee-name" || clicked.className === "employee-email" || clicked.className === "employee-city") {
+  } else if (
+    clicked.className === "employee-name" ||
+    clicked.className === "employee-email" ||
+    clicked.className === "employee-city"
+  ) {
     clicked.parentNode.parentNode.nextElementSibling.style.display = "block";
   }
 }
@@ -112,10 +121,14 @@ function enableModal() {
   employeesList.addEventListener("click", openModal);
 
   //Close modal
-  employeesList.addEventListener("click", closeModal)
+  employeesList.addEventListener("click", closeModal);
 
   // Modal close from outside click
   window.addEventListener("click", modalOutsideClick);
+
+  // Modal Slider Functionality
+  const modalSlides = document.getElementsByClassName("modal-content");
+  console.log(modalSlides);
 }
 
 //Search Functionality
@@ -123,18 +136,18 @@ function searchEmployees(employeeCollection) {
   searchBox.addEventListener("keyup", function() {
     const searchValue = searchBox.value.toLowerCase();
     //Loop through employee names
-    for (let i=0; i < employeeCollection.length; i++) {
+    for (let i = 0; i < employeeCollection.length; i++) {
       pTag = employeeCollection[i];
       const lowerCaseName = pTag.textContent.toLowerCase();
 
       // Check for input match on Employee names
       if (lowerCaseName.indexOf(searchValue) > -1) {
-        pTag.parentNode.parentNode.style.display = "block";
+        pTag.parentNode.parentNode.style.display = "flex";
       } else {
         pTag.parentNode.parentNode.style.display = "none";
       }
     }
-  })
+  });
 }
 
 /////////// INITIALIZE PAGE ///////////

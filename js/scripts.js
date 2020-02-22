@@ -1,6 +1,8 @@
 /////////// VARIABLES ///////////
 const searchBox = document.getElementById("search");
 const employeesList = document.querySelector(".employees");
+const modal = document.querySelector(".modal");
+const modalInner = document.querySelector(".modal-inner");
 const usersURL = "https://randomuser.me/api/?results=12&nat=us";
 
 /////////// FUNCTIONS ///////////
@@ -24,6 +26,7 @@ function checkStatus(response) {
 // Generates Employees on to the page
 function generateHTML(data) {
   console.log(data.results);
+
   data.results.map(employee => {
     const employeeDiv = document.createElement("div");
     employeeDiv.classList.add("employee-container");
@@ -53,10 +56,34 @@ function generateHTML(data) {
       </div>
       <span class="arrow-btn"></span>
     </div>
-    <div class="modal">
-      <div class="modal-content">
-        <p class="modal-close-btn">&times;</p>
-        <img class="profile-image modal-image" src="${employeePicture}" alt="employee">
+    `;
+  });
+
+  data.results.map(employee => {
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+    modalInner.appendChild(modalContent);
+
+    //Employee Variables
+    const employeePicture = employee.picture.large;
+    const employeeFullName = `${employee.name.first} ${employee.name.last}`;
+    const employeeEmail = employee.email;
+    const employeeCity = employee.location.city;
+    const employeePhone = employee.phone;
+    const employeeStreet = `${employee.location.street.number} ${employee.location.street.name}`;
+    const employeeState = employee.location.state;
+    const employeePostal = employee.location.postcode;
+
+    const employeeDOBEdit = employee.dob.date.substr(0, 10).split("-");
+    const employeeDOB = `${employeeDOBEdit[1]}/${employeeDOBEdit[2]}/${employeeDOBEdit[0]}`;
+
+    //Generate modal content
+    modalContent.innerHTML = `
+        <img
+        class="profile-image modal-image"
+        src="${employeePicture}"
+        alt="employee"
+        />
         <div class="modal-info-1">
           <p class="modal-employee-name">${employeeFullName}</p>
           <a href="#">${employeeEmail}</a>
@@ -64,15 +91,15 @@ function generateHTML(data) {
         </div>
         <div class="modal-info-2">
           <p>${employeePhone}</p>
-          <p>${employeeStreet}, ${employeeCity}, ${employeeState} ${employeePostal}</p>
+          <p>
+            ${employeeStreet}, ${employeeCity}, ${employeeState}
+            ${employeePostal}
+          </p>
           <p>Birthday: ${employeeDOB}</p>
         </div>
-        <p class="prevButton">&#10094;</p>
-        <p class="nextButton">&#10095;</p>
-      </div>
-    </div>
     `;
   });
+
   //Create variable to capture employee names
   const employeeNames = document.querySelectorAll(".employee-name");
   return employeeNames;
@@ -83,20 +110,16 @@ function openModal(e) {
   e.preventDefault();
   const clicked = e.target;
   //targets all clicked items inside of the employee-card and opens modal
-  if (clicked.className === "employee-card") {
-    clicked.nextElementSibling.style.display = "block";
-  } else if (
+  if (
+    clicked.className === "employee-card" ||
     clicked.className === "profile-image" ||
     clicked.className === "employee-text" ||
-    clicked.className === "arrow-btn"
-  ) {
-    clicked.parentNode.nextElementSibling.style.display = "block";
-  } else if (
+    clicked.className === "arrow-btn" ||
     clicked.className === "employee-name" ||
     clicked.className === "employee-email" ||
     clicked.className === "employee-city"
   ) {
-    clicked.parentNode.parentNode.nextElementSibling.style.display = "block";
+    modal.style.display = "block";
   }
 }
 
@@ -104,14 +127,14 @@ function openModal(e) {
 function closeModal(e) {
   const closeButton = e.target;
   if (closeButton.className === "modal-close-btn") {
-    closeButton.parentNode.parentNode.style.display = "none";
+    modal.style.display = "none";
   }
 }
 
 //Close Modal with Outside Click
 function modalOutsideClick(e) {
   if (e.target.className === "modal") {
-    e.target.style.display = "none";
+    modal.style.display = "none";
   }
 }
 
